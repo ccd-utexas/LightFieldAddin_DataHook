@@ -8,9 +8,11 @@ using System.Windows;
 
 using PrincetonInstruments.LightField.AddIns;
 
-namespace LightFieldAddInSamples
+namespace LightFieldAddIns
 {
     ///////////////////////////////////////////////////////////////////////////
+    // NOTE: Adapted from Sobel transform example
+    //
     //  This sample hooks into the data stream when data is being acquired or 
     // displayed and modifies the data by performing a sobel edge detection on 
     // the buffer(s). This is a menu driven addin and sets up a check box menu 
@@ -24,16 +26,16 @@ namespace LightFieldAddInSamples
     //  stream and modify the data.
     //
     ///////////////////////////////////////////////////////////////////////////
-    [AddIn("Output to DS9",
+    [AddIn("Data Hook",
             Version = "0.0.1",
             Publisher = "White Dwarf Research Group, Don Winget",
             Description = "Hooks into the data stream and outputs to DS9.")]
-    [QualificationData("IsSample", "True")]
-    public class AddinMenuSobel : AddInBase, ILightFieldAddIn
+    public class AddinMenuDataHook : AddInBase, ILightFieldAddIn
     {
         bool? processEnabled_;
         bool menuEnabled_;
-        RemotingSobelTransformation sobelTransformer_;
+        // TODO: replace with reference to class for outputing data
+        // RemotingSobelTransformation sobelTransformer_;
         IExperiment experiment_;
 
         ///////////////////////////////////////////////////////////////////////
@@ -61,7 +63,7 @@ namespace LightFieldAddInSamples
             // Connect to the data received event
             experiment_.ImageDataSetReceived += experimentDataReady;
 
-            Initialize(Application.Current.Dispatcher, "Online Sobel Sample (C#)");
+            Initialize(Application.Current.Dispatcher, "Data Hook");
         }
         ///////////////////////////////////////////////////////////////////////
         void experiment__ExperimentUpdated(object sender, ExperimentUpdatedEventArgs e)
@@ -80,7 +82,8 @@ namespace LightFieldAddInSamples
                 // Initialize Online Process and create transformation class
                 // If the system is ready
                 RegionOfInterest[] rois = experiment_.SelectedRegions;
-                sobelTransformer_ = new RemotingSobelTransformation(rois);
+                // TODO: replace with reference to class for outputting data
+                // sobelTransformer_ = new RemotingSobelTransformation(rois);
             }
         }
         ///////////////////////////////////////////////////////////////////////
@@ -90,7 +93,8 @@ namespace LightFieldAddInSamples
             {
                 // Initialize Online Process and create transformation class
                 RegionOfInterest[] rois = experiment_.SelectedRegions;
-                sobelTransformer_ = new RemotingSobelTransformation(rois);
+                // TODO: replace with call to output data
+                // sobelTransformer_ = new RemotingSobelTransformation(rois);
             }
         }
         ///////////////////////////////////////////////////////////////////////
@@ -107,7 +111,7 @@ namespace LightFieldAddInSamples
             experiment_.ImageDataSetReceived -= experimentDataReady;
         }
         ///////////////////////////////////////////////////////////////////////
-        public override string UIMenuTitle { get { return "Online Sobel Sample"; } }
+        public override string UIMenuTitle { get { return "Data Hook"; } }
         ///////////////////////////////////////////////////////////////////////
         public override bool UIMenuIsEnabled { get { return menuEnabled_; } }
         ///////////////////////////////////////////////////////////////////////
@@ -137,11 +141,16 @@ namespace LightFieldAddInSamples
                 // Are we transforming the data? Transform all frames in the package           
                 for (int i = 0; i < (int)e.ImageDataSet.Frames; i++)
                     for (int roi = 0; roi < e.ImageDataSet.Regions.Length; roi++)
-                        sobelTransformer_.Transform(e.ImageDataSet.GetFrame(roi, i), roi);
+                        // TODO: replace with reference to instance of data hook class
+                        // sobelTransformer_.Transform(e.ImageDataSet.GetFrame(roi, i), roi);
+                        continue;
             }
         }
     }
     ///////////////////////////////////////////////////////////////////////
+    // NOTE: This class is commented out where referenced.
+    // TODO: Replace all instances of RemoteSobelTransformation with
+    //       class to output data (via ironpython?)
     //
     //  Perform a Sobel Transformation on all regions
     //
