@@ -45,27 +45,27 @@ namespace LightFieldAddIns
     //     DataHook dataHook_;
     //     IExperiment experiment_;
 
-    //     ///////////////////////////////////////////////////////////////////////
-    //     public UISupport UISupport { get { return UISupport.Menu; } }
-    //     ///////////////////////////////////////////////////////////////////////
-    //     public void Activate(ILightFieldApplication app)
-    //     {
-    //         // Capture Interface
-    //         LightFieldApplication = app;
-    //         experiment_ = app.Experiment;
-    //         menuEnabled_ = CheckSystem();
-    //         processEnabled_ = false;
+        ///////////////////////////////////////////////////////////////////////
+        public UISupport UISupport { get { return UISupport.Menu; } }
+        ///////////////////////////////////////////////////////////////////////
+        public void Activate(ILightFieldApplication app)
+        {
+            // Capture Interface
+            LightFieldApplication = app;
+            experiment_ = app.Experiment;
+            menuEnabled_ = CheckSystem();
+            processEnabled_ = false;
 
-    //         // Connect to experiment device changed:
-    // 	        // When a camera is added, this add-in is active. 
-    //         // When a camera is removed, this add-in is disabled.
-    //         experiment_.ExperimentUpdated += experiment__ExperimentUpdated;
+            // Connect to experiment device changed:
+    	        // When a camera is added, this add-in is active. 
+            // When a camera is removed, this add-in is disabled.
+            experiment_.ExperimentUpdated += experiment__ExperimentUpdated;
 
-    //         // Connect to the data received event
-    //         experiment_.ImageDataSetReceived += experimentDataReady;
+            // Connect to the data received event
+            experiment_.ImageDataSetReceived += experimentDataReady;
 
-    //         Initialize(Application.Current.Dispatcher, "Data Hook");
-    //     }
+            Initialize(Application.Current.Dispatcher, "Data Hook");
+        }
     //     ///////////////////////////////////////////////////////////////////////
     //     void experiment__ExperimentUpdated(object sender, ExperimentUpdatedEventArgs e)
     //     {
@@ -78,15 +78,15 @@ namespace LightFieldAddIns
     //             RequestUIRefresh(UISupport.Menu);
     //         }
     //     }
-    //     ///////////////////////////////////////////////////////////////////////
-    //     public void Deactivate()
-    //     {
-    //         // Stop listening to device changes
-    //         experiment_.ExperimentUpdated -= experiment__ExperimentUpdated;
+        ///////////////////////////////////////////////////////////////////////
+        public void Deactivate()
+        {
+            // Stop listening to device changes
+            experiment_.ExperimentUpdated -= experiment__ExperimentUpdated;
 
-    //         // Disconnect Data Event            
-    //         experiment_.ImageDataSetReceived -= experimentDataReady;
-    //     }
+            // Disconnect Data Event            
+            experiment_.ImageDataSetReceived -= experimentDataReady;
+        }
     //     ///////////////////////////////////////////////////////////////////////
     //     public override string UIMenuTitle { get { return "Data Hook"; } }
     //     ///////////////////////////////////////////////////////////////////////
