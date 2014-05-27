@@ -138,6 +138,6 @@ namespace LightFieldAddIns
     // 	    // TODO: insert call to csharpfits
     // 	    // from http://heasarc.gsfc.nasa.gov/fitsio/fitsio.html
     // 	    // from http://vo.iucaa.ernet.in/~voi/CSharpFITS.html
-    // 	}
-    }
+    // 	    }
+    // }
 }
