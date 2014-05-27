@@ -38,8 +38,8 @@ namespace LightFieldAddIns
             Version = "0.0.1",
             Publisher = "White Dwarf Research Group, Don Winget",
             Description = "Hooks into data stream and overwrites temp file LightField_View.fits.")]
-    // public class AddinMenuDataHook : AddInBase, ILightFieldAddIn
-    // {
+    public class AddinMenuDataHook : AddInBase, ILightFieldAddIn
+    {
     //     bool? processEnabled_;
     //     bool menuEnabled_;
     //     DataHook dataHook_;
@@ -139,5 +139,5 @@ namespace LightFieldAddIns
     // 	    // from http://heasarc.gsfc.nasa.gov/fitsio/fitsio.html
     // 	    // from http://vo.iucaa.ernet.in/~voi/CSharpFITS.html
     // 	}
-    // }
+    }
 }
