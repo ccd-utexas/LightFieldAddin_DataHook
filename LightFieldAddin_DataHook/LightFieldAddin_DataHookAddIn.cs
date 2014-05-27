@@ -11,19 +11,22 @@ using PrincetonInstruments.LightField.AddIns;
 namespace LightFieldAddIns
 {
     ///////////////////////////////////////////////////////////////////////////
-    // NOTE: Adapted from Sobel transform example
     //
-    //  This sample hooks into the data stream when data is being acquired or 
-    // displayed and modifies the data by performing a sobel edge detection on 
-    // the buffer(s). This is a menu driven addin and sets up a check box menu 
+    // This addin hooks into the data stream when data is being acquired or 
+    // displayed and exports the buffer to LightField_View.fits.
+    // This is a menu driven addin and sets up a check box menu 
     // item as its source of control.
     //
-    //  Notes: It will only sobel transform the first region of interest.
+    //  Notes: Adapted from Online Sobel Sample:
+    //           C:\Users\Public\Documents\Princeton Instruments\LightField
+    //             \Add-in and Automation SDK\Samples\CSharp Add-Ins
+    //         It will only sobel transform the first region of interest.
     //         It must be connected before acquiring or focusing, turning it
     //         on after the acquisition is started will do nothing.    
     //
-    //  This sample shows how to inject your code into the LightField data 
-    //  stream and modify the data.
+    //  For include additional functionality within this addin.
+    //  Example: Make another class within this addin to save data as a fits
+    //  file while acquiring.
     //
     ///////////////////////////////////////////////////////////////////////////
     [AddIn("Data Hook",
