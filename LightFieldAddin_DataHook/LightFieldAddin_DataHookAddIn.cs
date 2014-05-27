@@ -12,10 +12,11 @@ namespace LightFieldAddIns
 {
     ///////////////////////////////////////////////////////////////////////////
     //
-    // This addin hooks into the data stream when data is being acquired or 
-    // displayed and exports the buffer to LightField_View.fits.
-    // This is a menu driven addin and sets up a check box menu 
-    // item as its source of control.
+    //  Purpose:
+    //  - This addin hooks into the data stream when data is being acquired or 
+    //    displayed and exports the buffer to LightField_View.fits.
+    //  - This is a menu driven addin and sets up a check box menu 
+    //    item as its source of control.
     //
     //  Notes:
     //  - Adapted from Online Sobel Sample:
@@ -36,13 +37,13 @@ namespace LightFieldAddIns
     [AddIn("Data Hook",
             Version = "0.0.1",
             Publisher = "White Dwarf Research Group, Don Winget",
-            Description = "Hooks into data stream and outputs temp file LightField_View.fits.")]
+            Description = "Hooks into data stream and overwrites temp file LightField_View.fits.")]
     public class AddinMenuDataHook : AddInBase, ILightFieldAddIn
     {
         bool? processEnabled_;
         bool menuEnabled_;
         // TODO: replace with reference to class for outputing data
-        // HookToFits hookToFits_;
+        DataHook dataHook_;
         // RemotingSobelTransformation sobelTransformer_;
         IExperiment experiment_;
 
@@ -87,11 +88,11 @@ namespace LightFieldAddIns
             // Building a system can change the sensor dimensions 
             if (systemCheck)
             {
-                // Initialize Online Process and create transformation class
+                // Initialize Online Process and create data hook class
                 // If the system is ready
                 RegionOfInterest[] rois = experiment_.SelectedRegions;
                 // TODO: replace with reference to class for outputting data
-                // hookToFits_ = new HookToFits(rois);
+                // dataHook_ = new HookToFits(rois);
                 // sobelTransformer_ = new RemotingSobelTransformation(rois);
             }
         }
@@ -103,7 +104,7 @@ namespace LightFieldAddIns
                 // Initialize Online Process and create transformation class
                 RegionOfInterest[] rois = experiment_.SelectedRegions;
                 // TODO: replace with call to output data
-                // hookToFits_ = new HookToFits(rois);
+                // dataHook_ = new HookToFits(rois);
                 // sobelTransformer_ = new RemotingSobelTransformation(rois);
             }
         }
@@ -148,17 +149,8 @@ namespace LightFieldAddIns
         {
             if (processEnabled_ == true) // NO-OP if its off on this event
             {
-                // Are we exporting the data? Transform all frames in the package.
-                // TODO: Only take first roi? What if frame rate is very high?
-                for (int i = 0; i < (int)e.ImageDataSet.Frames; i++)
-                    for (int roi = 0; roi < e.ImageDataSet.Regions.Length; roi++)
-                        // TODO: insert call to csharpfits
-                        // from http://heasarc.gsfc.nasa.gov/fitsio/fitsio.html
-                        // from http://vo.iucaa.ernet.in/~voi/CSharpFITS.html
-                        // TODO:    replace with reference to instance of data hook class
-                        // hookToFits_.BinToFits(e.ImageDataSet.GetFrame(0, 0));
-                        // sobelTransformer_.Transform(e.ImageDataSet.GetFrame(roi, i), roi);
-                        continue;
+                // Are we exporting the data? Export the first frame and ROI.
+	        dataHook_.ExportToFits(e.ImageDataSet.GetFrame(0, 0));
             }
         }
     }
@@ -170,12 +162,15 @@ namespace LightFieldAddIns
     public class DataHook
     {
         ///////////////////////////////////////////////////////////////////////
-        // Export to FITS.
+        // Export to LightField_View.fits
         ///////////////////////////////////////////////////////////////////////
-        public void ToFits(IImageData data, int roi)
+        public void ExportToFits(IImageData data)
         {
 	    // TODO: export to fits
 	    // obj to export: data.GetData()
+	    // TODO: insert call to csharpfits
+	    // from http://heasarc.gsfc.nasa.gov/fitsio/fitsio.html
+	    // from http://vo.iucaa.ernet.in/~voi/CSharpFITS.html
 	}
     }
 }
