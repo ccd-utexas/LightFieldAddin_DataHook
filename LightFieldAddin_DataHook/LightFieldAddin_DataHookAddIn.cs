@@ -42,9 +42,7 @@ namespace LightFieldAddIns
     {
         bool? processEnabled_;
         bool menuEnabled_;
-        // TODO: replace with reference to class for outputing data
         DataHook dataHook_;
-        // RemotingSobelTransformation sobelTransformer_;
         IExperiment experiment_;
 
         ///////////////////////////////////////////////////////////////////////
@@ -58,15 +56,9 @@ namespace LightFieldAddIns
             menuEnabled_ = CheckSystem();
             processEnabled_ = false;
 
-            // Listen to region of interest result changed and re-compute the buffers to match the 
-            // region
-            List<string> settings = new List<string>();
-            settings.Add(CameraSettings.ReadoutControlRegionsOfInterestResult);
-            experiment_.FilterSettingChanged(settings);
-            experiment_.SettingChanged += experiment__SettingChanged;
-
-            // Connect to experiment device changed (when camera is added this add-in is active, and 
-            // if a camera is removed then this add-in is disabled.
+            // Connect to experiment device changed:
+	    // When a camera is added, this add-in is active. 
+            // When a camera is removed, this add-in is disabled.
             experiment_.ExperimentUpdated += experiment__ExperimentUpdated;
 
             // Connect to the data received event
@@ -85,38 +77,12 @@ namespace LightFieldAddIns
                 menuEnabled_ = systemCheck;
                 RequestUIRefresh(UISupport.Menu);
             }
-            // Building a system can change the sensor dimensions 
-            if (systemCheck)
-            {
-                // Initialize Online Process and create data hook class
-                // If the system is ready
-                RegionOfInterest[] rois = experiment_.SelectedRegions;
-                // TODO: replace with reference to class for outputting data
-                // dataHook_ = new HookToFits(rois);
-                // sobelTransformer_ = new RemotingSobelTransformation(rois);
-            }
-        }
-        ///////////////////////////////////////////////////////////////////////
-        void experiment__SettingChanged(object sender, SettingChangedEventArgs e)
-        {
-            if (CheckSystem())
-            {
-                // Initialize Online Process and create transformation class
-                RegionOfInterest[] rois = experiment_.SelectedRegions;
-                // TODO: replace with call to output data
-                // dataHook_ = new HookToFits(rois);
-                // sobelTransformer_ = new RemotingSobelTransformation(rois);
-            }
         }
         ///////////////////////////////////////////////////////////////////////
         public void Deactivate()
         {
             // Stop listening to device changes
             experiment_.ExperimentUpdated -= experiment__ExperimentUpdated;
-
-            // Stop snooping settings
-            experiment_.FilterSettingChanged(new List<string>());
-            experiment_.SettingChanged -= experiment__SettingChanged;
 
             // Disconnect Data Event            
             experiment_.ImageDataSetReceived -= experimentDataReady;
