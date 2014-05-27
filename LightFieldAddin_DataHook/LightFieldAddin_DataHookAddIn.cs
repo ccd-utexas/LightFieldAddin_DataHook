@@ -142,14 +142,14 @@ namespace LightFieldAddIns
             return false;
         }
         ///////////////////////////////////////////////////////////////////////        
-        //  With all of the data in the block, transform it all        
+        //  With all of the data in the block, export it all to fits.
         ///////////////////////////////////////////////////////////////////////
         void experimentDataReady(object sender, ImageDataSetReceivedEventArgs e)
         {
             if (processEnabled_ == true) // NO-OP if its off on this event
             {
-                // Are we transforming the data? Transform all frames in the package
-                // TODO: only take first roi?
+                // Are we exporting the data? Transform all frames in the package.
+                // TODO: Only take first roi? What if frame rate is very high?
                 for (int i = 0; i < (int)e.ImageDataSet.Frames; i++)
                     for (int roi = 0; roi < e.ImageDataSet.Regions.Length; roi++)
                         // TODO: insert call to csharpfits
