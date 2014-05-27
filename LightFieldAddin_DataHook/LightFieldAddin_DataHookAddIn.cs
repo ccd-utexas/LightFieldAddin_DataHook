@@ -156,7 +156,7 @@ namespace LightFieldAddIns
                         // from http://heasarc.gsfc.nasa.gov/fitsio/fitsio.html
                         // from http://vo.iucaa.ernet.in/~voi/CSharpFITS.html
                         // TODO:    replace with reference to instance of data hook class
-                        // hookToFits_.BinToFits(e.ImageDataSet.GetFrame(roi, i), roi);
+                        // hookToFits_.BinToFits(e.ImageDataSet.GetFrame(0, 0));
                         // sobelTransformer_.Transform(e.ImageDataSet.GetFrame(roi, i), roi);
                         continue;
             }
@@ -164,126 +164,114 @@ namespace LightFieldAddIns
     }
     ///////////////////////////////////////////////////////////////////////
     //
-    //  Export all regions to fits.
+    //  Hook into data stream.
     //
     ///////////////////////////////////////////////////////////////////////
-    public class HookToFits
+    public class DataHook
     {
-        static int[][, ,] indexBuffers_;
-        static ushort[][] retData_;
-        
         ///////////////////////////////////////////////////////////////////////
-        // Build Buffers of Indexes On Construction For Speed
+        // Export to FITS.
         ///////////////////////////////////////////////////////////////////////
-        public HookToFits(RegionOfInterest[] rois)
+        public void ToFits(IImageData data, int roi)
         {
-	    // Allocate outer buffers
-	    indexBuffers_ = new int[rois.Length][, ,];
-
-	    for (int roiIndex = 0; roiIndex < rois.Length; roiIndex++)
-	    {
-	        int dW = rois[roiIndex].Width / rois[roiIndex].XBinning;
-		int dH = rois[roiindex].Height / rois[roiIndex].YBinning;
-
-		// Static Computed Once Upon Starting or roi changing
-		// Compute all of the indexes ahead of time, this makes the
-		// code process 10 times faster or more.
-		if ((indexBuffers_[roiIndex] == nul))
-	    }
+	    // TODO: export to fits
+	    // obj to export: data.GetData()
 	}
-    }
-    ///////////////////////////////////////////////////////////////////////
-    // NOTE: This class is commented out where referenced.
-    // TODO: Replace all instances of RemoteSobelTransformation with
-    //       class to output data (via ironpython?)
-    //
-    //  Perform a Sobel Transformation on all regions
-    //
-    ///////////////////////////////////////////////////////////////////////
-    public class RemotingSobelTransformation
-    {
-        static int[][, ,] indexBuffers_;
-        static ushort[][] retData_;
-
-        // Matrices
-        ///////////////////////////////////////////////////////////////////////
-        double[] gy = new double[] { -1, -2, -1, 0, 0, 0, 1, 2, 1 };
-        double[] gx = new double[] { -1, 0, 1, -2, 0, 2, -1, 0, 1 };
-        int[] xs = new int[] { -1, 0, 1, -1, 0, 1, -1, 0, 1 };
-        int[] ys = new int[] { -1, -1, -1, 0, 0, 0, 1, 1, 1 };
-        ///////////////////////////////////////////////////////////////////////
-        // Build Buffers of Indexes On Construction For Speed
-        ///////////////////////////////////////////////////////////////////////
-        public RemotingSobelTransformation(RegionOfInterest[] rois)
-        {
-            // Allocate outer buffers
-            indexBuffers_ = new int[rois.Length][, ,];
-            retData_ = new ushort[rois.Length][];
-
-            for (int roiIndex = 0; roiIndex < rois.Length; roiIndex++)
-            {
-                int dW = rois[roiIndex].Width / rois[roiIndex].XBinning;
-                int dH = rois[roiIndex].Height / rois[roiIndex].YBinning;
-
-                // Static Computed Once Upon Starting or roi changing
-                // Compute all of the indexes ahead of time, this makes the 
-                // code to do the process 10 times faster or more.
-                if ((indexBuffers_[roiIndex] == null) || (indexBuffers_[roiIndex].Length != dW * dH * 9))
-                {
-                    indexBuffers_[roiIndex] = new int[dW, dH, 9];
-                    for (int xx = 2; xx < dW - 2; xx++)
-                    {
-                        for (int yy = 2; yy < dH - 2; yy++)
-                        {
-                            for (int i = 0; i < 9; i++)
-                            {
-                                int index = (xx + xs[i]) + (yy + ys[i]) * dW;
-                                indexBuffers_[roiIndex][xx, yy, i] = index;
-                            }
-                        }
-                    }
-                }
-                // Output Data Buffers
-                retData_[roiIndex] = new ushort[dW * dH];
-            }
-        }
-        ///////////////////////////////////////////////////////////////////////
-        // Perform the actual transformation
-        ///////////////////////////////////////////////////////////////////////
-        public void Transform(IImageData data, int roi)
-        {
-            // Hint use locals (accessing on Interface forces boundary crossing)
-            // that will be unbearably slow.
-            int dW = data.Width;    // Boundary Crossing
-            int dH = data.Height;   // Boundary Crossing
-
-            ushort[] ptr = (ushort[])data.GetData();     // Input Data
-
-            // Loop Width & Height(Quick and Dirty Padding Of 2) 
-            // This Avoids a lot of boundary checking or reflection and increases speed
-            for (int xx = 2; xx < dW - 2; xx++)
-            {
-                for (int yy = 2; yy < dH - 2; yy++)
-                {
-                    double GY = 0, GX = 0;
-                    // Compute the X and Y Components
-                    for (int i = 0; i < 9; i++)
-                    {
-                        int idx = indexBuffers_[roi][xx, yy, i];
-                        GY += ptr[idx] * gy[i];
-                        GX += ptr[idx] * gx[i];
-                    }
-                    // Magnitude
-                    double G = Math.Sqrt(GX * GX + GY * GY);
-
-                    // Put the Magnitude into the output buffer
-                    retData_[roi][yy * dW + xx] = (ushort)G;
-                }
-            }
-            // Write the output buffer to the IImageData
-            // Boundary Crossing
-            data.SetData(retData_[roi]);
-        }
     }
 }
 
+//     // OLD
+
+//     ///////////////////////////////////////////////////////////////////////
+//     // NOTE: This class is commented out where referenced.
+//     // TODO: Replace all instances of RemoteSobelTransformation with
+//     //       class to output data (via ironpython?)
+//     //
+//     //  Perform a Sobel Transformation on all regions
+//     //
+//     ///////////////////////////////////////////////////////////////////////
+//     public class RemotingSobelTransformation
+//     {
+//         static int[][, ,] indexBuffers_;
+//         static ushort[][] retData_;
+
+//         // Matrices
+//         ///////////////////////////////////////////////////////////////////////
+//         double[] gy = new double[] { -1, -2, -1, 0, 0, 0, 1, 2, 1 };
+//         double[] gx = new double[] { -1, 0, 1, -2, 0, 2, -1, 0, 1 };
+//         int[] xs = new int[] { -1, 0, 1, -1, 0, 1, -1, 0, 1 };
+//         int[] ys = new int[] { -1, -1, -1, 0, 0, 0, 1, 1, 1 };
+//         ///////////////////////////////////////////////////////////////////////
+//         // Build Buffers of Indexes On Construction For Speed
+//         ///////////////////////////////////////////////////////////////////////
+//         public RemotingSobelTransformation(RegionOfInterest[] rois)
+//         {
+//             // Allocate outer buffers
+//             indexBuffers_ = new int[rois.Length][, ,];
+//             retData_ = new ushort[rois.Length][];
+
+//             for (int roiIndex = 0; roiIndex < rois.Length; roiIndex++)
+//             {
+//                 int dW = rois[roiIndex].Width / rois[roiIndex].XBinning;
+//                 int dH = rois[roiIndex].Height / rois[roiIndex].YBinning;
+
+//                 // Static Computed Once Upon Starting or roi changing
+//                 // Compute all of the indexes ahead of time, this makes the 
+//                 // code to do the process 10 times faster or more.
+//                 if ((indexBuffers_[roiIndex] == null) || (indexBuffers_[roiIndex].Length != dW * dH * 9))
+//                 {
+//                     indexBuffers_[roiIndex] = new int[dW, dH, 9];
+//                     for (int xx = 2; xx < dW - 2; xx++)
+//                     {
+//                         for (int yy = 2; yy < dH - 2; yy++)
+//                         {
+//                             for (int i = 0; i < 9; i++)
+//                             {
+//                                 int index = (xx + xs[i]) + (yy + ys[i]) * dW;
+//                                 indexBuffers_[roiIndex][xx, yy, i] = index;
+//                             }
+//                         }
+//                     }
+//                 }
+//                 // Output Data Buffers
+//                 retData_[roiIndex] = new ushort[dW * dH];
+//             }
+//         }
+//         ///////////////////////////////////////////////////////////////////////
+//         // Perform the actual transformation
+//         ///////////////////////////////////////////////////////////////////////
+//         public void Transform(IImageData data, int roi)
+//         {
+//             // Hint use locals (accessing on Interface forces boundary crossing)
+//             // that will be unbearably slow.
+//             int dW = data.Width;    // Boundary Crossing
+//             int dH = data.Height;   // Boundary Crossing
+
+//             ushort[] ptr = (ushort[])data.GetData();     // Input Data
+
+//             // Loop Width & Height(Quick and Dirty Padding Of 2) 
+//             // This Avoids a lot of boundary checking or reflection and increases speed
+//             for (int xx = 2; xx < dW - 2; xx++)
+//             {
+//                 for (int yy = 2; yy < dH - 2; yy++)
+//                 {
+//                     double GY = 0, GX = 0;
+//                     // Compute the X and Y Components
+//                     for (int i = 0; i < 9; i++)
+//                     {
+//                         int idx = indexBuffers_[roi][xx, yy, i];
+//                         GY += ptr[idx] * gy[i];
+//                         GX += ptr[idx] * gx[i];
+//                     }
+//                     // Magnitude
+//                     double G = Math.Sqrt(GX * GX + GY * GY);
+
+//                     // Put the Magnitude into the output buffer
+//                     retData_[roi][yy * dW + xx] = (ushort)G;
+//                 }
+//             }
+//             // Write the output buffer to the IImageData
+//             // Boundary Crossing
+//             data.SetData(retData_[roi]);
+//         }
+//     }
