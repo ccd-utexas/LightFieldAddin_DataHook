@@ -159,18 +159,35 @@ namespace LightFieldAddIns
         }
     }
     ///////////////////////////////////////////////////////////////////////
-    // NOTE: This class is commented out where referenced.
-    // TODO: Replace all instances of RemoteSobelTransformation with
-    //       class to output data (via ironpython?)
     //
-    //  Perform a Sobel Transformation on all regions
+    //  Export all regions to fits.
     //
     ///////////////////////////////////////////////////////////////////////
     public class HookToFits
     {
         static int[][, ,] indexBuffers_;
-        static ushort[][] retData;
+        static ushort[][] retData_;
+        
+        ///////////////////////////////////////////////////////////////////////
+        // Build Buffers of Indexes On Construction For Speed
+        ///////////////////////////////////////////////////////////////////////
+        public HookToFits(RegionOfInterest[] rois)
+        {
+	    // Allocate outer buffers
+	    indexBuffers_ = new int[rois.Length][, ,];
 
+	    for (int roiIndex = 0; roiIndex < rois.Length; roiIndex++)
+	    {
+	        int dW = rois[roiIndex].Width / rois[roiIndex].XBinning;
+		int dH = rois[roiindex].Height / rois[roiIndex].YBinning;
+
+		// Static Computed Once Upon Starting or roi changing
+		// Compute all of the indexes ahead of time, this makes the
+		// code process 10 times faster or more.
+		if ((indexBuffers_[roiIndex] == nul))
+	    }
+	}
+    }
     ///////////////////////////////////////////////////////////////////////
     // NOTE: This class is commented out where referenced.
     // TODO: Replace all instances of RemoteSobelTransformation with
