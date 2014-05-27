@@ -17,16 +17,20 @@ namespace LightFieldAddIns
     // This is a menu driven addin and sets up a check box menu 
     // item as its source of control.
     //
-    //  Notes: Adapted from Online Sobel Sample:
-    //           C:\Users\Public\Documents\Princeton Instruments\LightField
-    //             \Add-in and Automation SDK\Samples\CSharp Add-Ins
-    //         It will only sobel transform the first region of interest.
-    //         It must be connected before acquiring or focusing, turning it
-    //         on after the acquisition is started will do nothing.    
-    //
-    //  For include additional functionality within this addin.
-    //  Example: Make another class within this addin to save data as a fits
-    //  file while acquiring.
+    //  Notes:
+    //  - Adapted from Online Sobel Sample:
+    //    C:\Users\Public\Documents\Princeton Instruments\LightField
+    //      \Add-in and Automation SDK\Samples\CSharp Add-Ins
+    //  - It will only sobel transform the first region of interest.
+    //  - It must be connected before acquiring or focusing, turning it
+    //    on after the acquisition is started will do nothing.    
+    //  - As recommended from http://heasarc.gsfc.nasa.gov/fitsio/fitsio.html,
+    //    using CSharpFITS to export: http://vo.iucaa.ernet.in/~voi/CSharpFITS.html
+    //  - For include additional functionality within this addin.
+    //    Example: Make another class within this addin to save data as a fits
+    //    file while acquiring.
+    //  - Cannot use built-in IExportSettings methods to export to fits since they
+    //    expect a SPE file object complete with XML footer metadata.
     //
     ///////////////////////////////////////////////////////////////////////////
     [AddIn("Data Hook",
