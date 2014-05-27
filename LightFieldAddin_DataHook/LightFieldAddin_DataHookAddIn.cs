@@ -57,7 +57,7 @@ namespace LightFieldAddIns
             processEnabled_ = false;
 
             // Connect to experiment device changed:
-	    // When a camera is added, this add-in is active. 
+	        // When a camera is added, this add-in is active. 
             // When a camera is removed, this add-in is disabled.
             experiment_.ExperimentUpdated += experiment__ExperimentUpdated;
 
