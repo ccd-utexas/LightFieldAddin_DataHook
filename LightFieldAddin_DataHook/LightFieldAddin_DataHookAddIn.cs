@@ -29,12 +29,13 @@ namespace LightFieldAddIns
     [AddIn("Data Hook",
             Version = "0.0.1",
             Publisher = "White Dwarf Research Group, Don Winget",
-            Description = "Hooks into the data stream and outputs to DS9.")]
+            Description = "Hooks into data stream and outputs temp file LightField_View.fits.")]
     public class AddinMenuDataHook : AddInBase, ILightFieldAddIn
     {
         bool? processEnabled_;
         bool menuEnabled_;
         // TODO: replace with reference to class for outputing data
+        // HookToFits hookToFits_;
         // RemotingSobelTransformation sobelTransformer_;
         IExperiment experiment_;
 
@@ -83,6 +84,7 @@ namespace LightFieldAddIns
                 // If the system is ready
                 RegionOfInterest[] rois = experiment_.SelectedRegions;
                 // TODO: replace with reference to class for outputting data
+                // hookToFits_ = new HookToFits(rois);
                 // sobelTransformer_ = new RemotingSobelTransformation(rois);
             }
         }
@@ -94,6 +96,7 @@ namespace LightFieldAddIns
                 // Initialize Online Process and create transformation class
                 RegionOfInterest[] rois = experiment_.SelectedRegions;
                 // TODO: replace with call to output data
+                // hookToFits_ = new HookToFits(rois);
                 // sobelTransformer_ = new RemotingSobelTransformation(rois);
             }
         }
@@ -138,15 +141,33 @@ namespace LightFieldAddIns
         {
             if (processEnabled_ == true) // NO-OP if its off on this event
             {
-                // Are we transforming the data? Transform all frames in the package           
+                // Are we transforming the data? Transform all frames in the package
+                // TODO: only take first roi?
                 for (int i = 0; i < (int)e.ImageDataSet.Frames; i++)
                     for (int roi = 0; roi < e.ImageDataSet.Regions.Length; roi++)
-                        // TODO: replace with reference to instance of data hook class
+                        // TODO: insert call to csharpfits
+                        // from http://heasarc.gsfc.nasa.gov/fitsio/fitsio.html
+                        // from http://vo.iucaa.ernet.in/~voi/CSharpFITS.html
+                        // TODO:    replace with reference to instance of data hook class
+                        // hookToFits_.BinToFits(e.ImageDataSet.GetFrame(roi, i), roi);
                         // sobelTransformer_.Transform(e.ImageDataSet.GetFrame(roi, i), roi);
                         continue;
             }
         }
     }
+    ///////////////////////////////////////////////////////////////////////
+    // NOTE: This class is commented out where referenced.
+    // TODO: Replace all instances of RemoteSobelTransformation with
+    //       class to output data (via ironpython?)
+    //
+    //  Perform a Sobel Transformation on all regions
+    //
+    ///////////////////////////////////////////////////////////////////////
+    public class HookToFits
+    {
+        static int[][, ,] indexBuffers_;
+        static ushort[][] retData;
+
     ///////////////////////////////////////////////////////////////////////
     // NOTE: This class is commented out where referenced.
     // TODO: Replace all instances of RemoteSobelTransformation with
