@@ -40,87 +40,87 @@ namespace LightFieldAddIns
             Description = "Hooks into data stream and overwrites temp file LightField_View.fits.")]
     public class AddinMenuDataHook : AddInBase, ILightFieldAddIn
     {
-    //     bool? processEnabled_;
-    //     bool menuEnabled_;
+        bool? processEnabled_;
+        bool menuEnabled_;
     //     DataHook dataHook_;
-    //     IExperiment experiment_;
+        IExperiment experiment_;
 
         ///////////////////////////////////////////////////////////////////////
         public UISupport UISupport { get { return UISupport.Menu; } }
         ///////////////////////////////////////////////////////////////////////
         public void Activate(ILightFieldApplication app)
         {
-            // Capture Interface
-            LightFieldApplication = app;
-            experiment_ = app.Experiment;
-            menuEnabled_ = CheckSystem();
-            processEnabled_ = false;
+            // // Capture Interface
+            // LightFieldApplication = app;
+            // experiment_ = app.Experiment;
+            // menuEnabled_ = CheckSystem();
+            // processEnabled_ = false;
 
-            // Connect to experiment device changed:
-    	        // When a camera is added, this add-in is active. 
-            // When a camera is removed, this add-in is disabled.
-            experiment_.ExperimentUpdated += experiment__ExperimentUpdated;
+            // // Connect to experiment device changed:
+    	    //     // When a camera is added, this add-in is active. 
+            // // When a camera is removed, this add-in is disabled.
+            // experiment_.ExperimentUpdated += experiment__ExperimentUpdated;
 
-            // Connect to the data received event
-            experiment_.ImageDataSetReceived += experimentDataReady;
+            // // Connect to the data received event
+            // experiment_.ImageDataSetReceived += experimentDataReady;
 
-            Initialize(Application.Current.Dispatcher, "Data Hook");
+            // Initialize(Application.Current.Dispatcher, "Data Hook");
         }
-    //     ///////////////////////////////////////////////////////////////////////
-    //     void experiment__ExperimentUpdated(object sender, ExperimentUpdatedEventArgs e)
-    //     {
-    //         bool systemCheck = CheckSystem();
+        ///////////////////////////////////////////////////////////////////////
+        void experiment__ExperimentUpdated(object sender, ExperimentUpdatedEventArgs e)
+        {
+            // bool systemCheck = CheckSystem();
 
-    //         // Update on change only
-    //         if (menuEnabled_ != systemCheck)
-    //         {
-    //             menuEnabled_ = systemCheck;
-    //             RequestUIRefresh(UISupport.Menu);
-    //         }
-    //     }
+            // // Update on change only
+            // if (menuEnabled_ != systemCheck)
+            // {
+            //     menuEnabled_ = systemCheck;
+            //     RequestUIRefresh(UISupport.Menu);
+            // }
+        }
         ///////////////////////////////////////////////////////////////////////
         public void Deactivate()
         {
-            // Stop listening to device changes
-            experiment_.ExperimentUpdated -= experiment__ExperimentUpdated;
+            // // Stop listening to device changes
+            // experiment_.ExperimentUpdated -= experiment__ExperimentUpdated;
 
-            // Disconnect Data Event            
-            experiment_.ImageDataSetReceived -= experimentDataReady;
+            // // Disconnect Data Event            
+            // experiment_.ImageDataSetReceived -= experimentDataReady;
         }
     //     ///////////////////////////////////////////////////////////////////////
     //     public override string UIMenuTitle { get { return "Data Hook"; } }
-    //     ///////////////////////////////////////////////////////////////////////
-    //     public override bool UIMenuIsEnabled { get { return menuEnabled_; } }
+        ///////////////////////////////////////////////////////////////////////
+        public override bool UIMenuIsEnabled { get { return menuEnabled_; } }
     //     ///////////////////////////////////////////////////////////////////////
     //     public override bool? UIMenuIsChecked
     //     {
     //         get { return processEnabled_; }
     //         set { processEnabled_ = value; }
     //     }
-    //     ///////////////////////////////////////////////////////////////////////        
-    //     internal bool CheckSystem()
-    //     {
-    //         foreach (IDevice device in LightFieldApplication.Experiment.ExperimentDevices)
-    //         {
-    //             if (device.Type == DeviceType.Camera)
-    //                 return true;
-    //         }
-    //         // No Camera return false
-    //         return false;
-    //     }
-    //     ///////////////////////////////////////////////////////////////////////        
-    //     //  With all of the data in the block, export the first ROI in each frame to fits.
-    //     ///////////////////////////////////////////////////////////////////////
-    //     void experimentDataReady(object sender, ImageDataSetReceivedEventArgs e)
-    //     {
-    //         if (processEnabled_ == true) // NO-OP if its off on this event
-    //         {
-    //             // Are we exporting the data? Export the first ROI in each frame to fits.
-    // 	        for (int i = 0; i < (int)e.ImageDataSet.Frames; i++)
-    // 		    dataHook_.ExportToFits(e.ImageDataSet.GetFrame(0, 0));
-    //         }
-    //     }
-    // }
+        ///////////////////////////////////////////////////////////////////////        
+        internal bool CheckSystem()
+        {
+            // foreach (IDevice device in LightFieldApplication.Experiment.ExperimentDevices)
+            // {
+            //     if (device.Type == DeviceType.Camera)
+            //         return true;
+            // }
+            // // No Camera return false
+            // return false;
+        }
+        ///////////////////////////////////////////////////////////////////////        
+        //  With all of the data in the block, export the first ROI in each frame to fits.
+        ///////////////////////////////////////////////////////////////////////
+        void experimentDataReady(object sender, ImageDataSetReceivedEventArgs e)
+        {
+            // if (processEnabled_ == true) // NO-OP if its off on this event
+            // {
+            //     // Are we exporting the data? Export the first ROI in each frame to fits.
+    	    //     for (int i = 0; i < (int)e.ImageDataSet.Frames; i++)
+    	    // 	    dataHook_.ExportToFits(e.ImageDataSet.GetFrame(0, 0));
+            // }
+        }
+    }
     // ///////////////////////////////////////////////////////////////////////
     // //
     // //  Hook into data stream.
