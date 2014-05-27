@@ -106,7 +106,7 @@ namespace LightFieldAddIns
             //         return true;
             // }
             // // No Camera return false
-            // return false;
+            return false;
         }
         ///////////////////////////////////////////////////////////////////////        
         //  With all of the data in the block, export the first ROI in each frame to fits.
