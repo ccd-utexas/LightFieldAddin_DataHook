@@ -42,7 +42,7 @@ namespace LightFieldAddIns
     {
         bool? processEnabled_;
         bool menuEnabled_;
-    //     DataHook dataHook_;
+        DataHook dataHook_;
         IExperiment experiment_;
 
         ///////////////////////////////////////////////////////////////////////
@@ -121,23 +121,23 @@ namespace LightFieldAddIns
             // }
         }
     }
-    // ///////////////////////////////////////////////////////////////////////
-    // //
-    // //  Hook into data stream.
-    // //
-    // ///////////////////////////////////////////////////////////////////////
-    // public class DataHook
-    // {
-    //     ///////////////////////////////////////////////////////////////////////
-    //     // Export to LightField_View.fits
-    //     ///////////////////////////////////////////////////////////////////////
-    //     public void ExportToFits(IImageData data)
-    //     {
-    // 	    // TODO: export to fits
-    // 	    // obj to export: data.GetData()
-    // 	    // TODO: insert call to csharpfits
-    // 	    // from http://heasarc.gsfc.nasa.gov/fitsio/fitsio.html
-    // 	    // from http://vo.iucaa.ernet.in/~voi/CSharpFITS.html
-    // 	    }
-    // }
+    ///////////////////////////////////////////////////////////////////////
+    //
+    //  Hook into data stream.
+    //
+    ///////////////////////////////////////////////////////////////////////
+    public class DataHook
+    {
+        ///////////////////////////////////////////////////////////////////////
+        // Export to LightField_View.fits
+        ///////////////////////////////////////////////////////////////////////
+        public void ExportToFits(IImageData data)
+        {
+    	    // TODO: export to fits
+    	    // obj to export: data.GetData()
+    	    // TODO: insert call to csharpfits
+    	    // from http://heasarc.gsfc.nasa.gov/fitsio/fitsio.html
+    	    // from http://vo.iucaa.ernet.in/~voi/CSharpFITS.html
+	}
+    }
 }
