@@ -56,15 +56,15 @@ namespace LightFieldAddIns
             menuEnabled_ = CheckSystem();
             processEnabled_ = false;
 
-            // // Connect to experiment device changed:
-    	    //     // When a camera is added, this add-in is active. 
-            // // When a camera is removed, this add-in is disabled.
-            // experiment_.ExperimentUpdated += experiment__ExperimentUpdated;
+            // Connect to experiment device changed:
+	    // When a camera is added, this add-in is active. 
+            // When a camera is removed, this add-in is disabled.
+            experiment_.ExperimentUpdated += experiment__ExperimentUpdated;
 
-            // // Connect to the data received event
-            // experiment_.ImageDataSetReceived += experimentDataReady;
+            // Connect to the data received event
+            experiment_.ImageDataSetReceived += experimentDataReady;
 
-            // Initialize(Application.Current.Dispatcher, "Data Hook");
+            Initialize(Application.Current.Dispatcher, "Data Hook");
         }
         ///////////////////////////////////////////////////////////////////////
         void experiment__ExperimentUpdated(object sender, ExperimentUpdatedEventArgs e)
