@@ -153,7 +153,8 @@ namespace LightFieldAddIns
     {
         int[] dimens = new int[] {imagedata.Width, imagedata.Height};
         Array img = nom.tam.util.ArrayFuncs.Curl(imagedata.GetData(), dimens);
-        nom.tam.fits.Fits ffits = new nom.tam.fits.Fits();
+        // Image data is included with the Header Data Unit.
+        // CSharpFITS_v1.1.pdf, page 8, Create a FITS file from an image.
         nom.tam.fits.BasicHDU hdu = nom.tam.fits.FitsFactory.HDUFactory(img);
         hdu.Header.AddValue(
             "EXPSTART",
@@ -167,6 +168,8 @@ namespace LightFieldAddIns
             "FRAMENUM",
             metadata.FrameTrackingNumber.Value,
             "FrameTrackNum from LightField, 1 at RunInf-Acquire");
+        nom.tam.fits.Fits ffits = new nom.tam.fits.Fits();
+        ffits.AddHDU(hdu);
         nom.tam.util.BufferedFile bf = new nom.tam.util.BufferedFile(
             "LightFieldAddin_DataHook.fits",
             System.IO.FileAccess.Write,
