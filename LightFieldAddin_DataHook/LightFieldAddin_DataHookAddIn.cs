@@ -18,7 +18,7 @@ namespace LightFieldAddIns
   //  - This is a menu driven addin and sets up a check box menu 
   //    item as its source of control.
   //
-  //  Notes:
+  //  Notes: 
   //  - Adapted from Online Sobel Sample:
   //    C:\Users\Public\Documents\Princeton Instruments\LightField
   //      \Add-in and Automation SDK\Samples\CSharp Add-Ins
