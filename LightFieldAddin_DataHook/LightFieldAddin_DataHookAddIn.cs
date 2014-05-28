@@ -33,6 +33,7 @@ namespace LightFieldAddIns
   //  - Cannot use built-in IExportSettings methods to export to fits since they
   //    expect a SPE file object complete with XML footer metadata.
   //  - For further development, consider using IronPython instead of C#.
+  //    The CSharpFITS library is not actively maintained.
   //
   ///////////////////////////////////////////////////////////////////////////
   [AddIn("Data Hook",
@@ -148,57 +149,37 @@ namespace LightFieldAddIns
     }
     ///////////////////////////////////////////////////////////////////////
     // Export to fits file.
+    // Using http://vo.iucaa.ernet.in/~voi/CSharpFITS.html
+    // Following advice from http://heasarc.gsfc.nasa.gov/fitsio/fitsio.html
     ///////////////////////////////////////////////////////////////////////
     public void ExportToFits(IImageData imagedata, Metadata metadata)
     {
-      int[] dimens = new int[] {imagedata.Width, imagedata.Height};
-      Array img = nom.tam.util.ArrayFuncs.Curl(imagedata.GetData(), dimens);
-      // Image data is included with the Header Data Unit.
-      // CSharpFITS_v1.1.pdf, page 8, Create a FITS file from an image.
-      nom.tam.fits.BasicHDU hdu = nom.tam.fits.FitsFactory.HDUFactory(img);
-      hdu.Header.AddValue(
-			  "EXPSTART",
-			  metadata.ExposureStarted.Value.Ticks,
-			  "ExpStart from ProEM timer, 1E6 ticks/sec, 0 at RunInf-Acquire");
-      hdu.Header.AddValue(
-			  "EXPEND",
-			  metadata.ExposureEnded.Value.Ticks,
-			  "ExpEnd from ProEM timer, 1E6 ticks/sec, 0 at RunInf-Acquire");
-      hdu.Header.AddValue(
-			  "FRAMENUM",
-			  metadata.FrameTrackingNumber.Value,
-			  "FrameTrackNum from LightField, 1 at RunInf-Acquire");
-      nom.tam.fits.Fits ffits = new nom.tam.fits.Fits();
-      ffits.AddHDU(hdu);
-      nom.tam.util.BufferedFile bf = new nom.tam.util.BufferedFile(
-								   "LightFieldAddin_DataHook.fits",
-								   System.IO.FileAccess.Write,
-								   System.IO.FileShare.ReadWrite);
-      ffits.Write(bf);
-      bf.Flush();
-      bf.Close();
-      
-      // nom.tam.util.BufferedDataStream bds = new nom.tam.util.BufferedDataStream(
-      //    new System.IO.Stream)
-      // nom.tam.util.ArrayDataIO adio = 
-      // nom.tam.fits.Fits ffits = new nom.tam.fits.Fits("LightFieldAddin_DataHook");
-      // 
+      // int[] dimens = new int[] {imagedata.Width, imagedata.Height};
+      // Array img = nom.tam.util.ArrayFuncs.Curl(imagedata.GetData(), dimens);
+      // // Image data is included with the Header Data Unit.
+      // // CSharpFITS_v1.1.pdf, page 8, Create a FITS file from an image.
+      // nom.tam.fits.BasicHDU hdu = nom.tam.fits.FitsFactory.HDUFactory(img);
+      // hdu.Header.AddValue(
+      // 			  "EXPSTART",
+      // 			  metadata.ExposureStarted.Value.Ticks,
+      // 			  "ExpStart from ProEM timer, 1E6 ticks/sec, 0 at RunInf-Acquire");
+      // hdu.Header.AddValue(
+      // 			  "EXPEND",
+      // 			  metadata.ExposureEnded.Value.Ticks,
+      // 			  "ExpEnd from ProEM timer, 1E6 ticks/sec, 0 at RunInf-Acquire");
+      // hdu.Header.AddValue(
+      // 			  "FRAMENUM",
+      // 			  metadata.FrameTrackingNumber.Value,
+      // 			  "FrameTrackNum from LightField, 1 at RunInf-Acquire");
+      // nom.tam.fits.Fits ffits = new nom.tam.fits.Fits();
       // ffits.AddHDU(hdu);
-      // ffits.Write(frm);
-      // // TODO: export to fits
-      // // From page 22 of CSharpFITS_v1.1.pdf
-      // FitsFactory.UseAsciiTables = false;
-      // Fits f = new Fits ("LightFieldAddin_DataHook");
-      // Object[] data = new Object[]{ bytes, bits, bools, shorts, ints, floats, doubles, longs, strings };
-      // f.AddHDU(Fits.MakeHDU(data));
-      // 
-      // // OLD:
-      // Fits f = new Fits ("LightFieldAddin_DataHook")
-      // BinaryTableHDU h = (BinaryTableHDU)
-      // obj to export: data.GetData(), data.Width, data.Height, data.Format
-      // TODO: insert call to csharpfits
-      // from http://heasarc.gsfc.nasa.gov/fitsio/fitsio.html
-      // from http://vo.iucaa.ernet.in/~voi/CSharpFITS.html
+      // nom.tam.util.BufferedFile bf = new nom.tam.util.BufferedFile(
+      // 								   "LightFieldAddin_DataHook.fits",
+      // 								   System.IO.FileAccess.Write,
+      // 								   System.IO.FileShare.ReadWrite);
+      // ffits.Write(bf);
+      // bf.Flush();
+      // bf.Close();
     }
   }
 }
