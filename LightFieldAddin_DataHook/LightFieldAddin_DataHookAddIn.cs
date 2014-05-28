@@ -69,7 +69,7 @@ namespace LightFieldAddIns
         ///////////////////////////////////////////////////////////////////////
         void experiment__ExperimentUpdated(object sender, ExperimentUpdatedEventArgs e)
         {
-            // bool systemCheck = CheckSystem();
+            bool systemCheck = CheckSystem();
 
             // // Update on change only
             // if (menuEnabled_ != systemCheck)
@@ -91,12 +91,12 @@ namespace LightFieldAddIns
     //     public override string UIMenuTitle { get { return "Data Hook"; } }
         ///////////////////////////////////////////////////////////////////////
         public override bool UIMenuIsEnabled { get { return menuEnabled_; } }
-    //     ///////////////////////////////////////////////////////////////////////
-    //     public override bool? UIMenuIsChecked
-    //     {
-    //         get { return processEnabled_; }
-    //         set { processEnabled_ = value; }
-    //     }
+        ///////////////////////////////////////////////////////////////////////
+        public override bool? UIMenuIsChecked
+        {
+            get { return processEnabled_; }
+            set { processEnabled_ = value; }
+        }
         ///////////////////////////////////////////////////////////////////////        
         internal bool CheckSystem()
         {
