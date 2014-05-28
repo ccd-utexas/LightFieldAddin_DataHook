@@ -71,12 +71,12 @@ namespace LightFieldAddIns
         {
             bool systemCheck = CheckSystem();
 
-            // // Update on change only
-            // if (menuEnabled_ != systemCheck)
-            // {
-            //     menuEnabled_ = systemCheck;
-            //     RequestUIRefresh(UISupport.Menu);
-            // }
+            // Update on change only
+            if (menuEnabled_ != systemCheck)
+            {
+                menuEnabled_ = systemCheck;
+                RequestUIRefresh(UISupport.Menu);
+            }
         }
         ///////////////////////////////////////////////////////////////////////
         public void Deactivate()
