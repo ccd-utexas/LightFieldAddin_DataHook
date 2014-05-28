@@ -81,14 +81,14 @@ namespace LightFieldAddIns
         ///////////////////////////////////////////////////////////////////////
         public void Deactivate()
         {
-            // // Stop listening to device changes
-            // experiment_.ExperimentUpdated -= experiment__ExperimentUpdated;
+            // Stop listening to device changes
+            experiment_.ExperimentUpdated -= experiment__ExperimentUpdated;
 
-            // // Disconnect Data Event            
-            // experiment_.ImageDataSetReceived -= experimentDataReady;
+            // Disconnect Data Event            
+            experiment_.ImageDataSetReceived -= experimentDataReady;
         }
-    //     ///////////////////////////////////////////////////////////////////////
-    //     public override string UIMenuTitle { get { return "Data Hook"; } }
+        ///////////////////////////////////////////////////////////////////////
+        public override string UIMenuTitle { get { return "Data Hook"; } }
         ///////////////////////////////////////////////////////////////////////
         public override bool UIMenuIsEnabled { get { return menuEnabled_; } }
         ///////////////////////////////////////////////////////////////////////
