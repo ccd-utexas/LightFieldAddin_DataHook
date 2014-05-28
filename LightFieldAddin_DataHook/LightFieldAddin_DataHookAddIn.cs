@@ -109,16 +109,16 @@ namespace LightFieldAddIns
             return false;
         }
         ///////////////////////////////////////////////////////////////////////        
-        //  With all of the data in the block, export the first ROI in each frame to fits.
+        //  With all of the data in the buffer, export the first ROI in each frame to fits.
         ///////////////////////////////////////////////////////////////////////
         void experimentDataReady(object sender, ImageDataSetReceivedEventArgs e)
         {
-            // if (processEnabled_ == true) // NO-OP if its off on this event
-            // {
-            //     // Are we exporting the data? Export the first ROI in each frame to fits.
-    	    //     for (int i = 0; i < (int)e.ImageDataSet.Frames; i++)
-    	    // 	    dataHook_.ExportToFits(e.ImageDataSet.GetFrame(0, 0));
-            // }
+            if (processEnabled_ == true) // NO-OP if its off on this event
+            {
+                // Export the first ROI in each frame to fits.
+    	        for (int i = 0; i < (int)e.ImageDataSet.Frames; i++)
+    	    	    dataHook_.ExportToFits(e.ImageDataSet.GetFrame(0, i));
+            }
         }
     }
     ///////////////////////////////////////////////////////////////////////
