@@ -91,7 +91,7 @@ namespace LightFieldAddIns
       // Stop listening to device changes
       experiment_.ExperimentUpdated -= experiment__ExperimentUpdated;
       
-      // Disconnect Data Event            
+      // Disconnect data event            
       experiment_.ImageDataSetReceived -= experimentDataReady;
     }
     ///////////////////////////////////////////////////////////////////////
@@ -122,9 +122,13 @@ namespace LightFieldAddIns
     {
       if (processEnabled_ == true) // NO-OP if its off on this event
 	{
-	  // Export the first ROI in each frame to fits.
-	  for (int i = 0; i < (int)e.ImageDataSet.Frames; i++)
-	    dataHook_.ExportToFits(e.ImageDataSet.GetFrame(0, i));
+	  // Export the first ROI in the most recent frame to fits.
+	  int regionIndex = 0;
+	  long frameIndex = (long)(e.ImageDataSet.Frames - 1);
+	  // Note: Capitalization error in documentation: GetFrameMetaData, not GetFrameMetadata
+	  // Use Visual Studio "Go To Definition" to see.
+	  dataHook_.ExportToFits(e.ImageDataSet.GetFrame(regionIndex, frameIndex),
+				 e.ImageDataSet.GetFrameMetaData(frameIndex));
 	}
     }
   }
@@ -144,7 +148,7 @@ namespace LightFieldAddIns
     ///////////////////////////////////////////////////////////////////////
     // Export to LightField_View.fits
     ///////////////////////////////////////////////////////////////////////
-    public void ExportToFits(IImageData data)
+    public void ExportToFits(IImageData data, Metadata metadata)
     {
       // TODO: export to fits
       // obj to export: data.GetData()
