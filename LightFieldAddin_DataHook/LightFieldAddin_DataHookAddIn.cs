@@ -50,11 +50,11 @@ namespace LightFieldAddIns
         ///////////////////////////////////////////////////////////////////////
         public void Activate(ILightFieldApplication app)
         {
-            // // Capture Interface
-            // LightFieldApplication = app;
-            // experiment_ = app.Experiment;
-            // menuEnabled_ = CheckSystem();
-            // processEnabled_ = false;
+            // Capture Interface
+            LightFieldApplication = app;
+            experiment_ = app.Experiment;
+            menuEnabled_ = CheckSystem();
+            processEnabled_ = false;
 
             // // Connect to experiment device changed:
     	    //     // When a camera is added, this add-in is active. 
