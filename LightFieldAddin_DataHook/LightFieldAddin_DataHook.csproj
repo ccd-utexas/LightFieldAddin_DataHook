@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CSharpFITS_v1.1">
+      <HintPath>..\CSharpFITS_v1.1_dll\CSharpFITS_v1.1.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="PrincetonInstruments.LightFieldAddInSupportServices">
