@@ -154,11 +154,19 @@ namespace LightFieldAddIns
         int[] dimens = new int[] {imagedata.Width, imagedata.Height};
         Array img = nom.tam.util.ArrayFuncs.Curl(imagedata.GetData(), dimens);
         nom.tam.fits.Fits ffits = new nom.tam.fits.Fits();
-        nom.tam.fits.BasicHDU hdu = nom.tam.fits.FitsFactory.HDUFactory(hdr, img);
-        hdu.Header.AddValue("EXP", metadata.ExposureStarted.Value.Seconds, "ProEM timer/counter")
-        ffits.AddHDU(hdu);
-        nom.tam.fits.Header hdr = hdu.Header;
-        hdr.
+        nom.tam.fits.BasicHDU hdu = nom.tam.fits.FitsFactory.HDUFactory(img);
+        hdu.Header.AddValue(
+            "EXPSTART",
+            metadata.ExposureStarted.Value.Ticks,
+            "ExpStart from ProEM timer, 1E6 ticks/sec, 0 at RunInf-Acquire");
+        hdu.Header.AddValue(
+            "EXPEND",
+            metadata.ExposureEnded.Value.Ticks,
+            "ExpEnd from ProEM timer, 1E6 ticks/sec, 0 at RunInf-Acquire");
+        hdu.Header.AddValue(
+            "FRAMENUM",
+            metadata.FrameTrackingNumber.Value,
+            "FrameTrackNum from LightField, 1 at RunInf-Acquire");
         nom.tam.util.BufferedFile bf = new nom.tam.util.BufferedFile(
             "LightFieldAddin_DataHook.fits",
             System.IO.FileAccess.Write,
