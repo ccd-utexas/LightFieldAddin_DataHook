@@ -14,7 +14,7 @@ namespace LightFieldAddIns
   //
   //  Purpose:
   //  - This addin hooks into the data stream when data is being acquired or 
-  //    displayed and exports the buffer to LightField_View.fits.
+  //    displayed and exports the buffer a fits file.
   //  - This is a menu driven addin and sets up a check box menu 
   //    item as its source of control.
   //
@@ -37,7 +37,7 @@ namespace LightFieldAddIns
   [AddIn("Data Hook",
 	 Version = "0.0.1",
 	 Publisher = "White Dwarf Research Group, Don Winget",
-	 Description = "Hooks into data stream and overwrites temp file LightField_View.fits.")]
+	 Description = "Hooks into data stream and exports current frame to LightFieldAddin_DataHook.fits")]
   public class AddinMenuDataHook : AddInBase, ILightFieldAddIn
   {
     bool? processEnabled_;
@@ -146,12 +146,21 @@ namespace LightFieldAddIns
     {
     }
     ///////////////////////////////////////////////////////////////////////
-    // Export to LightField_View.fits
+    // Export to fits file.
     ///////////////////////////////////////////////////////////////////////
-    public void ExportToFits(IImageData data, Metadata metadata)
+    public void ExportToFits(IImageData imagedata, Metadata metadata)
     {
-      // TODO: export to fits
-      // obj to export: data.GetData()
+      // // TODO: export to fits
+      // // From page 22 of CSharpFITS_v1.1.pdf
+      // FitsFactory.UseAsciiTables = false;
+      // Fits f = new Fits ("LightFieldAddin_DataHook");
+      // Object[] data = new Object[]{ bytes, bits, bools, shorts, ints, floats, doubles, longs, strings };
+      // f.AddHDU(Fits.MakeHDU(data));
+      // 
+      // // OLD:
+      // Fits f = new Fits ("LightFieldAddin_DataHook")
+      // BinaryTableHDU h = (BinaryTableHDU)
+      // obj to export: data.GetData(), data.Width, data.Height, data.Format
       // TODO: insert call to csharpfits
       // from http://heasarc.gsfc.nasa.gov/fitsio/fitsio.html
       // from http://vo.iucaa.ernet.in/~voi/CSharpFITS.html
