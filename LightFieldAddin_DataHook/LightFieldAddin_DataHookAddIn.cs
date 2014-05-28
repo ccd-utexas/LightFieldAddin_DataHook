@@ -154,7 +154,8 @@ namespace LightFieldAddIns
     ///////////////////////////////////////////////////////////////////////
     public void ExportToFits(IImageData imagedata, Metadata metadata)
     {
-      int[] dimens = new int[] {imagedata.Width, imagedata.Height};
+      Console.WriteLine("Does this at least work?")
+      // int[] dimens = new int[] {imagedata.Width, imagedata.Height};
       // Array img = nom.tam.util.ArrayFuncs.Curl(imagedata.GetData(), dimens);
       // // Image data is included with the Header Data Unit.
       // // CSharpFITS_v1.1.pdf, page 8, Create a FITS file from an image.
