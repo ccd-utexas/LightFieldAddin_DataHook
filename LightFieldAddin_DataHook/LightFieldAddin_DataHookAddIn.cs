@@ -22,9 +22,9 @@ namespace LightFieldAddIns
     //  - Adapted from Online Sobel Sample:
     //    C:\Users\Public\Documents\Princeton Instruments\LightField
     //      \Add-in and Automation SDK\Samples\CSharp Add-Ins
-    //  - It will only sobel transform the first region of interest.
-    //  - It must be connected before acquiring or focusing, turning it
-    //    on after the acquisition is started will do nothing.    
+    //  - It will only export the first region of interest.
+    //  - It must be connected before clicking "Run Infinite" or "Acquire".
+    //    Turning it on after the clicking "Run Infinite" or "Acquire" will do nothing.    
     //  - As recommended from http://heasarc.gsfc.nasa.gov/fitsio/fitsio.html,
     //    using CSharpFITS to export: http://vo.iucaa.ernet.in/~voi/CSharpFITS.html
     //  - For include additional functionality within this addin.
