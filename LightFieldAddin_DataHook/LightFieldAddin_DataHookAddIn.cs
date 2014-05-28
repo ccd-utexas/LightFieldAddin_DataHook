@@ -5,8 +5,8 @@ using System.Text;
 using System.AddIn;
 using System.AddIn.Pipeline;
 using System.Windows;
-
 using PrincetonInstruments.LightField.AddIns;
+using nom.tam;
 
 namespace LightFieldAddIns
 {
@@ -32,6 +32,7 @@ namespace LightFieldAddIns
   //    file while acquiring.
   //  - Cannot use built-in IExportSettings methods to export to fits since they
   //    expect a SPE file object complete with XML footer metadata.
+  //  - For further development, consider using IronPython instead of C#.
   //
   ///////////////////////////////////////////////////////////////////////////
   [AddIn("Data Hook",
@@ -150,6 +151,29 @@ namespace LightFieldAddIns
     ///////////////////////////////////////////////////////////////////////
     public void ExportToFits(IImageData imagedata, Metadata metadata)
     {
+        int[] dimens = new int[] {imagedata.Width, imagedata.Height};
+        Array img = nom.tam.util.ArrayFuncs.Curl(imagedata.GetData(), dimens);
+        nom.tam.fits.Fits ffits = new nom.tam.fits.Fits();
+        nom.tam.fits.BasicHDU hdu = nom.tam.fits.FitsFactory.HDUFactory(hdr, img);
+        hdu.Header.AddValue("EXP", metadata.ExposureStarted.Value.Seconds, "ProEM timer/counter")
+        ffits.AddHDU(hdu);
+        nom.tam.fits.Header hdr = hdu.Header;
+        hdr.
+        nom.tam.util.BufferedFile bf = new nom.tam.util.BufferedFile(
+            "LightFieldAddin_DataHook.fits",
+            System.IO.FileAccess.Write,
+            System.IO.FileShare.ReadWrite);
+        ffits.Write(bf);
+        bf.Flush();
+        bf.Close();
+
+        // nom.tam.util.BufferedDataStream bds = new nom.tam.util.BufferedDataStream(
+        //    new System.IO.Stream)
+        // nom.tam.util.ArrayDataIO adio = 
+        // nom.tam.fits.Fits ffits = new nom.tam.fits.Fits("LightFieldAddin_DataHook");
+        // 
+        // ffits.AddHDU(hdu);
+        // ffits.Write(frm);
       // // TODO: export to fits
       // // From page 22 of CSharpFITS_v1.1.pdf
       // FitsFactory.UseAsciiTables = false;
