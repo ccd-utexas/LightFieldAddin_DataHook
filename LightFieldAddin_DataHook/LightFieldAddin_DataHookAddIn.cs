@@ -154,7 +154,7 @@ namespace LightFieldAddIns
     ///////////////////////////////////////////////////////////////////////
     public void ExportToFits(IImageData imagedata, Metadata metadata)
     {
-      Console.WriteLine("Does this at least work?")
+        Console.WriteLine("Does this at least work?");
       // int[] dimens = new int[] {imagedata.Width, imagedata.Height};
       // Array img = nom.tam.util.ArrayFuncs.Curl(imagedata.GetData(), dimens);
       // // Image data is included with the Header Data Unit.
