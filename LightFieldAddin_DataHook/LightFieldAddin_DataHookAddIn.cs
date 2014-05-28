@@ -125,8 +125,10 @@ namespace LightFieldAddIns
 	  // Export the first ROI in the most recent frame to fits.
 	  int regionIndex = 0;
 	  long frameIndex = (long)(e.ImageDataSet.Frames - 1);
+	  // Note: Capitalization error in documentation: GetFrameMetaData, not GetFrameMetadata
+	  // Use Visual Studio "Go To Definition" to see.
 	  dataHook_.ExportToFits(e.ImageDataSet.GetFrame(regionIndex, frameIndex),
-				 e.ImageDataSet.GetFrameMetadata(frameIndex));
+				 e.ImageDataSet.GetFrameMetaData(frameIndex));
 	}
     }
   }
