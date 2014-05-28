@@ -100,12 +100,12 @@ namespace LightFieldAddIns
         ///////////////////////////////////////////////////////////////////////        
         internal bool CheckSystem()
         {
-            // foreach (IDevice device in LightFieldApplication.Experiment.ExperimentDevices)
-            // {
-            //     if (device.Type == DeviceType.Camera)
-            //         return true;
-            // }
-            // // No Camera return false
+            foreach (IDevice device in LightFieldApplication.Experiment.ExperimentDevices)
+            {
+                if (device.Type == DeviceType.Camera)
+                    return true;
+            }
+            // No Camera return false
             return false;
         }
         ///////////////////////////////////////////////////////////////////////        
