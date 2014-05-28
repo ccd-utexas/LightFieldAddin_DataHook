@@ -56,10 +56,6 @@ namespace LightFieldAddIns
       menuEnabled_ = CheckSystem();
       processEnabled_ = false;
       
-      // Listen to region of interest result changed
-      List<string> settings = new List<string>();
-      experiment
-
       // Connect to experiment device changed:
       // When a camera is added, this add-in is active. 
       // When a camera is removed, this add-in is disabled.
@@ -89,16 +85,6 @@ namespace LightFieldAddIns
 	  dataHook_ = new DataHook();
 	}
     }
-    ///////////////////////////////////////////////////////////////////////
-    void experiment__SettingChanged(object sender, SettingChangedEventArgs e)
-    {
-      if (CheckSystem())
-	{
-	  // Initialize online process and create data hook class
-	  dataHook_ = new DataHook();
-	}
-    }
-
     ///////////////////////////////////////////////////////////////////////
     public void Deactivate()
     {
