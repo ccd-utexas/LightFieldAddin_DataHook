@@ -91,7 +91,7 @@ namespace LightFieldAddIns
       // Stop listening to device changes
       experiment_.ExperimentUpdated -= experiment__ExperimentUpdated;
       
-      // Disconnect Data Event            
+      // Disconnect data event            
       experiment_.ImageDataSetReceived -= experimentDataReady;
     }
     ///////////////////////////////////////////////////////////////////////
