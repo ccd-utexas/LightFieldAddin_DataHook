@@ -154,7 +154,13 @@ namespace LightFieldAddIns
     ///////////////////////////////////////////////////////////////////////
     public void ExportToFits(IImageData imagedata, Metadata metadata)
     {
-        Console.WriteLine("Does this at least work?");
+      // NOTE: The code commented here does not work. When this addin is enabled,
+      //       LightField displays an error that the addin had to be deactivated
+      //       and the experiment halts.
+      //       In future, consider using File Sample addin from LightField
+      //       to export a temporary SPE file. CSharpFITS code is not maintained.
+      //       Also consider using IronPython to speed development.
+      // 
       // int[] dimens = new int[] {imagedata.Width, imagedata.Height};
       // Array img = nom.tam.util.ArrayFuncs.Curl(imagedata.GetData(), dimens);
       // // Image data is included with the Header Data Unit.
