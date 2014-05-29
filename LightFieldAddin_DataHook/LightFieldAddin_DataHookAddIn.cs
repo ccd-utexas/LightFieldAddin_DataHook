@@ -5,8 +5,8 @@ using System.Text;
 using System.AddIn;
 using System.AddIn.Pipeline;
 using System.Windows;
-
 using PrincetonInstruments.LightField.AddIns;
+using nom.tam;
 
 namespace LightFieldAddIns
 {
@@ -14,7 +14,7 @@ namespace LightFieldAddIns
   //
   //  Purpose:
   //  - This addin hooks into the data stream when data is being acquired or 
-  //    displayed and exports the buffer to LightField_View.fits.
+  //    displayed and exports the buffer a fits file.
   //  - This is a menu driven addin and sets up a check box menu 
   //    item as its source of control.
   //
@@ -32,12 +32,14 @@ namespace LightFieldAddIns
   //    file while acquiring.
   //  - Cannot use built-in IExportSettings methods to export to fits since they
   //    expect a SPE file object complete with XML footer metadata.
+  //  - For further development, consider using IronPython instead of C#.
+  //    The CSharpFITS library is not actively maintained.
   //
   ///////////////////////////////////////////////////////////////////////////
   [AddIn("Data Hook",
 	 Version = "0.0.1",
 	 Publisher = "White Dwarf Research Group, Don Winget",
-	 Description = "Hooks into data stream and overwrites temp file LightField_View.fits.")]
+	 Description = "Hooks into data stream and exports current frame to LightFieldAddin_DataHook.fits")]
   public class AddinMenuDataHook : AddInBase, ILightFieldAddIn
   {
     bool? processEnabled_;
@@ -146,15 +148,45 @@ namespace LightFieldAddIns
     {
     }
     ///////////////////////////////////////////////////////////////////////
-    // Export to LightField_View.fits
+    // Export to fits file.
+    // Using http://vo.iucaa.ernet.in/~voi/CSharpFITS.html
+    // Following advice from http://heasarc.gsfc.nasa.gov/fitsio/fitsio.html
     ///////////////////////////////////////////////////////////////////////
-    public void ExportToFits(IImageData data, Metadata metadata)
+    public void ExportToFits(IImageData imagedata, Metadata metadata)
     {
-      // TODO: export to fits
-      // obj to export: data.GetData()
-      // TODO: insert call to csharpfits
-      // from http://heasarc.gsfc.nasa.gov/fitsio/fitsio.html
-      // from http://vo.iucaa.ernet.in/~voi/CSharpFITS.html
+      // NOTE: The code commented here does not work. When this addin is enabled,
+      //       LightField displays an error that the addin had to be deactivated
+      //       and the experiment halts.
+      //       In future, consider using File Sample addin from LightField
+      //       to export a temporary SPE file. CSharpFITS code is not maintained.
+      //       Also consider using IronPython to speed development.
+      // 
+      // int[] dimens = new int[] {imagedata.Width, imagedata.Height};
+      // Array img = nom.tam.util.ArrayFuncs.Curl(imagedata.GetData(), dimens);
+      // // Image data is included with the Header Data Unit.
+      // // CSharpFITS_v1.1.pdf, page 8, Create a FITS file from an image.
+      // nom.tam.fits.BasicHDU hdu = nom.tam.fits.FitsFactory.HDUFactory(img);
+      // hdu.Header.AddValue(
+      // 			  "EXPSTART",
+      // 			  metadata.ExposureStarted.Value.Ticks,
+      // 			  "ExpStart from ProEM timer, 1E6 ticks/sec, 0 at RunInf-Acquire");
+      // hdu.Header.AddValue(
+      // 			  "EXPEND",
+      // 			  metadata.ExposureEnded.Value.Ticks,
+      // 			  "ExpEnd from ProEM timer, 1E6 ticks/sec, 0 at RunInf-Acquire");
+      // hdu.Header.AddValue(
+      // 			  "FRAMENUM",
+      // 			  metadata.FrameTrackingNumber.Value,
+      // 			  "FrameTrackNum from LightField, 1 at RunInf-Acquire");
+      // nom.tam.fits.Fits ffits = new nom.tam.fits.Fits();
+      // ffits.AddHDU(hdu);
+      // nom.tam.util.BufferedFile bf = new nom.tam.util.BufferedFile(
+      // 								   "LightFieldAddin_DataHook.fits",
+      // 								   System.IO.FileAccess.Write,
+      // 								   System.IO.FileShare.ReadWrite);
+      // ffits.Write(bf);
+      // bf.Flush();
+      // bf.Close();
     }
   }
 }
