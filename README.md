@@ -1,6 +1,8 @@
 # LightFieldAddin_DataHook
 
-This LightField Addin hooks into the data stream for use by other programs.
+This LightField Addin hooks into the data stream for use by other programs. As of 2014-05-29, the code does not work. For now, just create a file focus.spe to focus. Read and analyze the file as it is being written by LightField.
+
+**Warning:** Creating an addin to access data while acquiring will put additional overhead on LightField. If memory is managed improperly or if the data rate exceeds execution speed, the addin could cause LightField to crash.
 
 ## Purpose:
 - This addin hooks into the data stream when data is being acquired or 
